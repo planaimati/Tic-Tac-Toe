@@ -20,7 +20,7 @@ class Board {
 
   movesTotal = 0;
   xd = ["kółko", "krzyżyk"];
-  actualPlayer;
+  actualPlayer = "kółko";
   win = false;
   draw = false;
 
@@ -61,7 +61,7 @@ class Board {
     this.createBoard();
     this.displayBoard();
     this.restartPlayerValues();
-    this.pickPlayer();
+    this.actualPlayer = "kółko";
     this.player.style.display = "block";
 
     if (this.win) {
@@ -79,16 +79,12 @@ class Board {
     this.movesTotal = 0;
   };
   // losowy wybór gracza
-  pickPlayer = () => {
-    const player = this.xd[Math.floor(Math.random() * this.xd.length)];
-    this.actualPlayer = player;
-  };
+
   setPlayerInfo = () => {
     this.player.innerText = this.actualPlayer;
   };
   //wyświetlanie info na temat wygranego
   setWinner = () => {
-    console.log(this.player1.moves);
     this.win = true;
     this.player.style.display = "none";
     if (this.actualPlayer === "kółko") {
@@ -143,7 +139,6 @@ class Board {
   };
   // aktualizowanie statystyk gracza
   addMoveToPlayer = (actualPlayer) => {
-    console.log(actualPlayer);
     if (actualPlayer === "kółko") {
       this.player1.moves++;
     } else if (actualPlayer === "krzyżyk") {
@@ -151,10 +146,8 @@ class Board {
     }
 
     this.movesTotal = this.player1.moves + this.player2.moves;
-
-    //console.log(this.movesTotal);
   };
-  //wyświetlanie znwku po kliknięciu
+  //wyświetlanie znaku po kliknięciu
   addSign = (x, index) => {
     const boardItem = document.querySelectorAll("i");
     this.board.map((item) => {
@@ -166,15 +159,16 @@ class Board {
         } else if (item.value === "krzyżyk") {
           boardItem[index].classList.add("fas", "fa-times");
         }
+
         this.actualPlayer = this.player1.value ? "kółko" : "krzyżyk";
+        this.setPlayerInfo();
+        console.log(this.actualPlayer);
         this.addMoveToPlayer(this.actualPlayer);
         this.checkWinner();
 
         this.player1.value = !this.player1.value;
 
         this.checkDraw();
-        this.setPlayerInfo();
-        console.log(this.player2.moves);
       }
     });
   };
