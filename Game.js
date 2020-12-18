@@ -3,13 +3,12 @@ class Game {
     this.board = new Board(
       document.querySelector(".board"),
       document.querySelector(".player"),
-      document.querySelector(".winnerInfo")
+      document.querySelector(".winnerInfo"),
+      document.querySelector(".newGame")
     );
-    this.menu = new Menu(document.querySelector(".newGame"));
   }
 
   init = () => {
     this.board.init();
-    this.menu.init();
   };
 }

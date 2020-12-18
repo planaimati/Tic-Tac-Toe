@@ -1,15 +1,28 @@
 class Board {
-  constructor(boardContainer, player, winner) {
+  constructor(boardContainer, player, winner, newGame) {
     this.boardContainer = boardContainer;
     this.player = player;
     this.winner = winner;
+    this.newGame = newGame;
   }
 
   board = [];
-  player1 = true;
-  player2 = false;
+  player1 = {
+    name: "",
+    moves: 0,
+    value: true,
+  };
+  player2 = {
+    name: "",
+    moves: 0,
+    value: false,
+  };
+
+  movesTotal = 0;
   xd = ["kółko", "krzyżyk"];
   actualPlayer;
+  win = false;
+  draw = false;
 
   winningPossibilities = [
     [0, 1, 2],
@@ -23,10 +36,13 @@ class Board {
   ];
 
   init = () => {
+    this.addListeners();
     this.createBoard();
     this.displayBoard();
-    this.pickPlayer();
-    this.setPlayerInfo();
+  };
+
+  addListeners = () => {
+    this.newGame.addEventListener("click", () => this.createNewGame());
   };
 
   createBoard = () => {
@@ -37,6 +53,30 @@ class Board {
       };
       this.board.push(item);
     }
+  };
+
+  createNewGame = () => {
+    this.board = [];
+    this.clearBoard();
+    this.createBoard();
+    this.displayBoard();
+    this.restartPlayerValues();
+    this.pickPlayer();
+    this.player.style.display = "block";
+
+    if (this.win) {
+      this.win = !this.win;
+    } else if (this.draw) {
+      this.draw = !this.draw;
+    }
+  };
+
+  restartPlayerValues = () => {
+    this.player1.value = true;
+    this.player2.value = false;
+    this.player1.moves = 0;
+    this.player2.moves = 0;
+    this.movesTotal = 0;
   };
 
   pickPlayer = () => {
@@ -50,11 +90,18 @@ class Board {
   };
 
   setWinner = () => {
+    this.win = true;
     this.winner.innerText = `winner is ${this.actualPlayer}`;
     this.player.style.display = "none";
   };
 
   clearBoard = () => {
+    const xd = document.querySelectorAll(".boardItem");
+
+    xd.forEach((item) => {
+      item.remove();
+    });
+
     const boardItem = document.querySelectorAll("i");
     this.board.map((item) => {
       item.value = "";
@@ -62,10 +109,19 @@ class Board {
     boardItem.forEach((item) => {
       item.classList.remove("far", "fa-circle", "fas", "fa-times");
     });
+
+    this.winner.innerText = "";
+    this.player.innerText = "";
   };
 
   checkWinner = () => {
     this.winningPossibilities.forEach((item) => {
+      // console.log(
+      //   this.board,
+      //   this.board[item[0]].value,
+      //   this.board[item[1]].value,
+      //   this.board[item[2]].value
+      // );
       if (
         this.board[item[0]].value === this.actualPlayer &&
         this.board[item[0]].value !== "" &&
@@ -74,64 +130,42 @@ class Board {
         this.board[item[2]].value === this.actualPlayer &&
         this.board[item[2]].value !== ""
       ) {
-        console.log(`winner is ${this.actualPlayer}`);
         this.setWinner();
       } else if (
-        this.board[item[0]].value !== this.actualPlayer &&
         this.board[item[0]].value !== "" &&
-        this.board[item[1]].value !== this.actualPlayer &&
         this.board[item[1]].value !== "" &&
-        this.board[item[2]].value !== this.actualPlayer &&
         this.board[item[2]].value !== ""
       ) {
-        console.log("remis");
       }
     });
-    // if (
-    //   this.board[0].value === this.board[1].value &&
-    //   this.board[0].value === this.board[2].value &&
-    //   this.board[2].value !== ""
-    // ) {
-    //   console.log(` ${this.player1 ? "player1" : "player2"} wygrał`);
-    //   this.clearBoard();
-    //   return;
-    // } else if (
-    //   this.board[3].value === this.board[4].value &&
-    //   this.board[3].value === this.board[5].value &&
-    //   this.board[5].value !== ""
-    // ) {
-    //   console.log(` ${this.player1 ? "player1" : "player2"} wygrał`);
-    //   return;
-    // } else if (
-    //   this.board[6].value === this.board[7].value &&
-    //   this.board[6].value === this.board[8].value &&
-    //   this.board[8].value !== ""
-    // ) {
-    //   console.log(` ${this.player1 ? "player1" : "player2"} wygrał`);
-    //   return;
-    // } else if (
-    //   this.board[0].value === this.board[4].value &&
-    //   this.board[0].value === this.board[8].value &&
-    //   this.board[8].value !== ""
-    // ) {
-    //   console.log(` ${this.player1 ? "player1" : "player2"} wygrał`);
-    //   return;
-    // } else if (
-    //   this.board[2].value === this.board[4].value &&
-    //   this.board[2].value === this.board[6].value &&
-    //   this.board[6].value !== ""
-    // ) {
-    //   console.log(` ${this.player1 ? "player1" : "player2"} wygrał`);
-    //   return;
-    // } else {
-    // }
+  };
+
+  checkDraw = () => {
+    if (this.win === false && this.movesTotal === 9) {
+      console.log("remis");
+      this.draw = !this.draw;
+      this.winner.innerText = `remis`;
+      this.player.style.display = "none";
+    }
+  };
+
+  addMoveToPlayer = (actualPlayer) => {
+    if (actualPlayer === "kółko") {
+      this.player1.moves++;
+    } else if (actualPlayer === "krzyżyk") {
+      this.player2.moves++;
+    }
+
+    this.movesTotal = this.player1.moves + this.player2.moves;
+
+    console.log(this.movesTotal);
   };
 
   addSign = (x, index) => {
     const boardItem = document.querySelectorAll("i");
     this.board.map((item) => {
-      if (item.id === index && item.value === "") {
-        item.value = this.player1 ? "kółko" : "krzyżyk";
+      if (item.id === index && item.value === "" && this.win !== true) {
+        item.value = this.player1.value ? "kółko" : "krzyżyk";
 
         if (item.value === "kółko") {
           boardItem[index].classList.add("far", "fa-circle");
@@ -141,8 +175,12 @@ class Board {
       }
     });
     this.checkWinner();
-    this.player1 = !this.player1;
-    this.actualPlayer = this.player1 ? "kółko" : "krzyżyk";
+
+    this.player1.value = !this.player1.value;
+
+    this.actualPlayer = this.player1.value ? "kółko" : "krzyżyk";
+    this.addMoveToPlayer(this.actualPlayer);
+    this.checkDraw();
     this.setPlayerInfo();
   };
 

@@ -6,6 +6,7 @@
 
 body {
   width: 100%;
+  font-family: "Press Start 2P", cursive;
 }
 
 .container {
@@ -14,39 +15,28 @@ body {
   background-color: grey;
   display: flex;
   align-items: center;
-  justify-content: center;
-}
-
-.gameContainer {
-  height: 90vh;
-  width: 90vh;
-  background-color: blue;
-  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
 }
 
 .boardContainer {
-  flex-basis: 70%;
+  width: 70vh;
+  height: 70vh;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
 }
 
-.menuContainer {
-  flex-basis: 30%;
-  background-color: white;
-}
-
 .board {
-  background-color: red;
-  height: 60%;
-  width: 90%;
+  height: 100%;
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
 }
 
 .boardItem {
-  background-color: #fff;
+  background-color: transparent;
   height: calc(100% / 3);
   width: calc(100% / 3);
   display: flex;
@@ -55,34 +45,33 @@ body {
   border: 2px solid black;
 }
 
-.popup {
-  display: none;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
 .playerName {
-  margin-bottom: 30px;
+  height: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .player {
   font-size: 30px;
-  font-family: sans-serif;
-  text-transform: uppercase;
   color: white;
   text-align: center;
 }
 
 .winnerInfo {
   font-size: 30px;
-  font-family: sans-serif;
-  text-transform: uppercase;
   color: white;
   text-align: center;
 }
 
 i {
   font-size: 60px;
+  color: white;
+}
+
+.newGame {
+  font-family: "Press Start 2P", cursive;
+  background: none;
+  font-size: 20px;
+  border: none;
 }

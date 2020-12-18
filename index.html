@@ -3,7 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>kółko krzyżyk</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
     <script
       src="https://kit.fontawesome.com/a344107c21.js"
       crossorigin="anonymous"
@@ -12,23 +17,24 @@
   </head>
   <body>
     <div class="container">
-      <div class="gameContainer">
+      <h5>gra kółko i krzyżyk</h5>
+      <div class="playerName">
+        <p class="player"></p>
+        <p class="winnerInfo"></p>
+      </div>
+      
         <div class="boardContainer">
-          <div class="playerName">
-            <p class="player"></p>
-            <p class="winnerInfo"></p>
-          </div>
           
+
           <div class="board"></div>
         </div>
-        <div class="menuContainer">
+        
           <button class="newGame">new game</button>
-        </div>
+        
       </div>
     </div>
 
     <script src="Board.js"></script>
-    <script src="Menu.js"></script>
     <script src="Game.js"></script>
     <script src="app.js"></script>
   </body>
